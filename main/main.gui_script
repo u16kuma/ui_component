@@ -1,0 +1,124 @@
+local ui = require("ui_component.ui_component")
+
+local function create_button_animation()
+	local instance = ui.create_component("button_animation")
+	instance.start = function(self)
+		local trigger = self.entity:get_component("event_trigger")
+		local button = self.entity:get_component("button")
+		trigger.pointer_down:add(function(data)
+			if button.interactive then
+				local n = gui.get_node(data.id)
+				gui.animate(n, gui.PROP_SCALE, vmath.vector3(0.96), gui.EASING_OUTBACK, 0.2)
+			end
+		end)
+		trigger.pointer_up:add(function(data)
+			if button.interactive then
+				local n = gui.get_node(data.id)
+				gui.animate(n, gui.PROP_SCALE, vmath.vector3(1), gui.EASING_OUTBACK, 0.2)
+			end
+		end)
+		trigger.pointer_click:add(function(data)
+			if button.interactive then
+				local n = gui.get_node(data.id)
+				gui.animate(n, gui.PROP_SCALE, vmath.vector3(1), gui.EASING_OUTBACK, 0.2)
+			end
+		end)
+	end
+	return instance
+end
+
+local function create_toggle_animation()
+	local instance = ui.create_component("toggle_animation")
+	instance.start = function(self)
+		local toggle = self.entity:get_component("toggle")
+		toggle.on_value_changed:add(function(data)
+			local n = gui.get_node(data.id)
+			if data.is_on then
+				gui.set_color(n, vmath.vector3(0.3, 1, 0.3))
+			else 
+				gui.set_color(n, vmath.vector3(1))
+			end
+		end)
+	end
+	return instance
+end
+
+local function make_ui(self)
+	self.entity_manager = ui.create_entity_manager()
+
+	self.entity_manager:add(ui.create_entity("button", {
+		ui.create_button(),
+		ui.create_event_trigger(),
+		create_button_animation(),
+	}))
+	self.entity_manager:add(ui.create_entity("toggle", {
+		ui.create_button(),
+		ui.create_event_trigger(),
+		ui.create_toggle(),
+		create_toggle_animation(),
+		create_button_animation(),
+	}))
+
+	do
+		self.entity_manager:add(ui.create_entity("toggle1", {
+			ui.create_button(),
+			ui.create_event_trigger(),
+			ui.create_toggle(),
+			create_toggle_animation(),
+			create_button_animation(),
+		}))
+		self.entity_manager:add(ui.create_entity("toggle2", {
+			ui.create_button(),
+			ui.create_event_trigger(),
+			ui.create_toggle(),
+			create_toggle_animation(),
+			create_button_animation(),
+		}))
+		self.entity_manager:add(ui.create_entity("toggle3", {
+			ui.create_button(),
+			ui.create_event_trigger(),
+			ui.create_toggle(),
+			create_toggle_animation(),
+			create_button_animation(),
+		}))
+		self.entity_manager:add(ui.create_entity("toggle4", {
+			ui.create_button(),
+			ui.create_event_trigger(),
+			ui.create_toggle(),
+			create_toggle_animation(),
+			create_button_animation(),
+		}))
+		self.entity_manager:add(ui.create_entity("toggle5", {
+			ui.create_button(),
+			ui.create_event_trigger(),
+			ui.create_toggle(),
+			create_toggle_animation(),
+			create_button_animation(),
+		}))
+		self.entity_manager:add(ui.create_entity("toggle_group", {
+			ui.create_toggle_group()
+		}))
+
+		local toggle_group = self.entity_manager:get("toggle_group"):get_component("toggle_group")
+		toggle_group:register_toggle(self.entity_manager:get("toggle1"):get_component("toggle"))
+		toggle_group:register_toggle(self.entity_manager:get("toggle2"):get_component("toggle"))
+		toggle_group:register_toggle(self.entity_manager:get("toggle3"):get_component("toggle"))
+		toggle_group:register_toggle(self.entity_manager:get("toggle4"):get_component("toggle"))
+		toggle_group:register_toggle(self.entity_manager:get("toggle5"):get_component("toggle"))
+	end
+
+	self.entity_manager:start()
+end
+
+function init(self)
+	msg.post("@render:", "clear_color", {
+		color = vmath.vector4(0.93, 0.93, 0.93, 0)
+	})
+	msg.post(".", "acquire_input_focus")
+
+	make_ui(self)
+end
+
+function on_input(self, action_id, action)
+	self.entity_manager:on_input(action_id, action)
+end
