@@ -3,6 +3,7 @@ local entity = require "ui_component.ecs.entity"
 local entity_manager = require "ui_component.ecs.entity_manager"
 local event_trigger = require "ui_component.components.event_trigger"
 local button = require "ui_component.components.button"
+local toggle = require "ui_component.components.toggle"
 local ui = require "ui_component.ui_component"
 
 local function create_button_animation()
@@ -59,7 +60,7 @@ local function make_ui(self)
 	self.entity_manager:add(entity.new("toggle", {
 		button.new(),
 		event_trigger.new(),
-		ui.create_toggle(),
+		toggle.new(),
 		create_toggle_animation(),
 		create_button_animation(),
 	}))
@@ -68,35 +69,35 @@ local function make_ui(self)
 		self.entity_manager:add(entity.new("toggle1", {
 			button.new(),
 			event_trigger.new(),
-			ui.create_toggle(),
+			toggle.new(),
 			create_toggle_animation(),
 			create_button_animation(),
 		}))
 		self.entity_manager:add(entity.new("toggle2", {
 			button.new(),
 			event_trigger.new(),
-			ui.create_toggle(),
+			toggle.new(),
 			create_toggle_animation(),
 			create_button_animation(),
 		}))
 		self.entity_manager:add(entity.new("toggle3", {
 			button.new(),
 			event_trigger.new(),
-			ui.create_toggle(),
+			toggle.new(),
 			create_toggle_animation(),
 			create_button_animation(),
 		}))
 		self.entity_manager:add(entity.new("toggle4", {
 			button.new(),
 			event_trigger.new(),
-			ui.create_toggle(),
+			toggle.new(),
 			create_toggle_animation(),
 			create_button_animation(),
 		}))
 		self.entity_manager:add(entity.new("toggle5", {
 			button.new(),
 			event_trigger.new(),
-			ui.create_toggle(),
+			toggle.new(),
 			create_toggle_animation(),
 			create_button_animation(),
 		}))

@@ -5,39 +5,6 @@ local entity = require "ui_component.ecs.entity"
 
 local M = {}
 
-function M.create_toggle()
-	local instance = component.new("toggle")
-	local _is_on = false
-	property.define(instance, "is_on", {
-		get = function()
-			return _is_on
-		end,
-		set = function(v)
-			if v ~= _is_on then
-				if (instance.can_change and instance.can_change(instance)) or (not instance.can_change) then
-					_is_on = v
-					instance.on_value_changed:invoke(instance)
-				end
-			end
-		end
-	})
-	instance.can_change = nil
-	instance.on_value_changed = event.new()
-	instance.group = nil
-	instance.start = function(self)
-		local trigger = self.entity:get_component("event_trigger")
-		local button = self.entity:get_component("button")
-		trigger.pointer_click:add(function(data)
-			if button.interactive then
-				self.is_on = not self.is_on
-			end
-		end)
-	end
-	instance.on_input = function(self, action_id, action)
-	end
-	return instance
-end
-
 function M.create_toggle_group()
 	local instance = component.new("toggle_group")
 	local _allow_switch_off = false
