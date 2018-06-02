@@ -5,46 +5,6 @@ local entity = require "ui_component.ecs.entity"
 
 local M = {}
 
-function M.create_event_trigger()
-	local instance = component.new("event_trigger")
-	instance.pointer_enter = event.new()
-	instance.pointer_exit = event.new()
-	instance.pointer_down = event.new()
-	instance.pointer_up = event.new()
-	instance.pointer_click = event.new()
-	instance.is_clicked = false
-	instance.is_entered = false
-	instance.touch_hash = hash("touch")
-	instance.start = function(self)
-	end
-	instance.on_input = function(self, action_id, action)
-		local n = gui.get_node(self.id)
-		local x = action.x
-		local y = action.y
-		if (not self.is_entered) and gui.pick_node(n, x, y) then
-			self.is_entered = true
-			self.pointer_enter:invoke(self)
-		end
-		if self.is_entered and action.pressed then
-			self.is_clicked = true
-			self.pointer_down:invoke(self)
-		end
-		if self.is_clicked and action.released then
-			if gui.pick_node(n, x, y) then
-				self.pointer_click:invoke(self)
-			else
-				self.pointer_up:invoke(self)
-			end
-			self.is_clicked = false
-		end
-		if self.is_entered and (not gui.pick_node(n, x, y)) then
-			self.is_entered = false
-			self.pointer_exit:invoke(self)
-		end
-	end
-	return instance
-end
-
 function M.create_button()
 	local instance = component.new("button")
 	local _interactive = true
