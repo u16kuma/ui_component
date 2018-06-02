@@ -1,7 +1,9 @@
-local ui = require("ui_component.ui_component")
+local component = require "ui_component.ecs.component"
+local entity = require "ui_component.ecs.entity"
+local ui = require "ui_component.ui_component"
 
 local function create_button_animation()
-	local instance = ui.create_component("button_animation")
+	local instance = component.new("button_animation")
 	instance.start = function(self)
 		local trigger = self.entity:get_component("event_trigger")
 		local button = self.entity:get_component("button")
@@ -28,7 +30,7 @@ local function create_button_animation()
 end
 
 local function create_toggle_animation()
-	local instance = ui.create_component("toggle_animation")
+	local instance = component.new("toggle_animation")
 	instance.start = function(self)
 		local toggle = self.entity:get_component("toggle")
 		toggle.on_value_changed:add(function(data)
@@ -46,12 +48,12 @@ end
 local function make_ui(self)
 	self.entity_manager = ui.create_entity_manager()
 
-	self.entity_manager:add(ui.create_entity("button", {
+	self.entity_manager:add(entity.new("button", {
 		ui.create_button(),
 		ui.create_event_trigger(),
 		create_button_animation(),
 	}))
-	self.entity_manager:add(ui.create_entity("toggle", {
+	self.entity_manager:add(entity.new("toggle", {
 		ui.create_button(),
 		ui.create_event_trigger(),
 		ui.create_toggle(),
@@ -60,42 +62,42 @@ local function make_ui(self)
 	}))
 
 	do
-		self.entity_manager:add(ui.create_entity("toggle1", {
+		self.entity_manager:add(entity.new("toggle1", {
 			ui.create_button(),
 			ui.create_event_trigger(),
 			ui.create_toggle(),
 			create_toggle_animation(),
 			create_button_animation(),
 		}))
-		self.entity_manager:add(ui.create_entity("toggle2", {
+		self.entity_manager:add(entity.new("toggle2", {
 			ui.create_button(),
 			ui.create_event_trigger(),
 			ui.create_toggle(),
 			create_toggle_animation(),
 			create_button_animation(),
 		}))
-		self.entity_manager:add(ui.create_entity("toggle3", {
+		self.entity_manager:add(entity.new("toggle3", {
 			ui.create_button(),
 			ui.create_event_trigger(),
 			ui.create_toggle(),
 			create_toggle_animation(),
 			create_button_animation(),
 		}))
-		self.entity_manager:add(ui.create_entity("toggle4", {
+		self.entity_manager:add(entity.new("toggle4", {
 			ui.create_button(),
 			ui.create_event_trigger(),
 			ui.create_toggle(),
 			create_toggle_animation(),
 			create_button_animation(),
 		}))
-		self.entity_manager:add(ui.create_entity("toggle5", {
+		self.entity_manager:add(entity.new("toggle5", {
 			ui.create_button(),
 			ui.create_event_trigger(),
 			ui.create_toggle(),
 			create_toggle_animation(),
 			create_button_animation(),
 		}))
-		self.entity_manager:add(ui.create_entity("toggle_group", {
+		self.entity_manager:add(entity.new("toggle_group", {
 			ui.create_toggle_group()
 		}))
 

@@ -1,26 +1,12 @@
 local event = require "ui_component.util.event"
 local property = require "ui_component.util.property"
+local component = require "ui_component.ecs.component"
+local entity = require "ui_component.ecs.entity"
 
 local M = {}
 
-function M.create_component(component_id)
-	local instance = {}
-	instance.component_id = component_id
-	instance.init = function(self, id, entity)
-		instance.id = id
-		instance.entity = entity
-	end
-	instance.start = function(self)
-		-- override
-	end
-	instance.on_input = function(self, action_id, action)
-		-- override
-	end
-	return instance
-end
-
 function M.create_event_trigger()
-	local instance = M.create_component("event_trigger")
+	local instance = component.new("event_trigger")
 	instance.pointer_enter = event.new()
 	instance.pointer_exit = event.new()
 	instance.pointer_down = event.new()
@@ -60,7 +46,7 @@ function M.create_event_trigger()
 end
 
 function M.create_button()
-	local instance = M.create_component("button")
+	local instance = component.new("button")
 	local _interactive = true
 	property.define(instance, "interactive", {
 		get = function()
@@ -83,7 +69,7 @@ function M.create_button()
 end
 
 function M.create_toggle()
-	local instance = M.create_component("toggle")
+	local instance = component.new("toggle")
 	local _is_on = false
 	property.define(instance, "is_on", {
 		get = function()
@@ -116,7 +102,7 @@ function M.create_toggle()
 end
 
 function M.create_toggle_group()
-	local instance = M.create_component("toggle_group")
+	local instance = component.new("toggle_group")
 	local _allow_switch_off = false
 	property.define(instance, "allow_switch_off", {
 		get = function() return _allow_switch_off end,
@@ -191,34 +177,6 @@ function M.create_slider()
 end
 
 function M.create_scroll()
-end
-
-function M.create_entity(id, components)
-	local instance = {}
-	instance.id = id
-	instance.components = components
-	for i = 1, #instance.components do
-		instance.components[i]:init(id, instance)
-	end
-	instance.get_component = function(self, component_id)
-		for i = 1, #self.components do
-			if self.components[i].component_id == component_id then
-				return self.components[i]
-			end
-		end
-		return nil
-	end
-	instance.start = function(self)
-		for i = 1, #self.components do
-			self.components[i]:start()
-		end
-	end
-	instance.on_input = function(self, action_id, action)
-		for i = 1, #self.components do
-			self.components[i]:on_input(action_id, action)
-		end
-	end
-	return instance
 end
 
 function M.create_entity_manager()
