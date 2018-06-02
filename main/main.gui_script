@@ -1,5 +1,6 @@
 local component = require "ui_component.ecs.component"
 local entity = require "ui_component.ecs.entity"
+local entity_manager = require "ui_component.ecs.entity_manager"
 local ui = require "ui_component.ui_component"
 
 local function create_button_animation()
@@ -46,7 +47,7 @@ local function create_toggle_animation()
 end
 
 local function make_ui(self)
-	self.entity_manager = ui.create_entity_manager()
+	self.entity_manager = entity_manager.new()
 
 	self.entity_manager:add(entity.new("button", {
 		ui.create_button(),
