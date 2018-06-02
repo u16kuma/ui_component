@@ -55,6 +55,9 @@ function M.new()
 	property.define(instance, "on_value_changed", {
 		get = function() return _private[instance].on_value_changed end
 	})
+	property.define(instance, "group", {
+		get = function() return _private[instance].group end
+	})
 
 	return instance
 end

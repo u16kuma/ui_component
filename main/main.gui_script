@@ -4,7 +4,7 @@ local entity_manager = require "ui_component.ecs.entity_manager"
 local event_trigger = require "ui_component.components.event_trigger"
 local button = require "ui_component.components.button"
 local toggle = require "ui_component.components.toggle"
-local ui = require "ui_component.ui_component"
+local toggle_group = require "ui_component.components.toggle_group"
 
 local function create_button_animation()
 	local instance = component.new("button_animation")
@@ -102,7 +102,7 @@ local function make_ui(self)
 			create_button_animation(),
 		}))
 		self.entity_manager:add(entity.new("toggle_group", {
-			ui.create_toggle_group()
+			toggle_group.new()
 		}))
 
 		local toggle_group = self.entity_manager:get("toggle_group"):get_component("toggle_group")
