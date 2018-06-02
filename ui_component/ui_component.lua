@@ -5,29 +5,6 @@ local entity = require "ui_component.ecs.entity"
 
 local M = {}
 
-function M.create_button()
-	local instance = component.new("button")
-	local _interactive = true
-	property.define(instance, "interactive", {
-		get = function()
-			return _interactive
-		end,
-		set = function(v)
-			_interactive = v
-		end
-	})
-	instance.on_clicked = event.new()
-	instance.start = function(self)
-		local trigger = self.entity:get_component("event_trigger")
-		trigger.pointer_click:add(function(data)
-			if self.interactive then
-				self.on_clicked:invoke()
-			end
-		end)
-	end
-	return instance
-end
-
 function M.create_toggle()
 	local instance = component.new("toggle")
 	local _is_on = false
