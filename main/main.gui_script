@@ -126,7 +126,7 @@ local function make_ui(self)
 			create_button_animation(),
 		}))
 		self.entity_manager:add(entity.new("gauge", {
-			gauge.new("gauge_fill", "gauge_background", 80, 100)
+			gauge.new("gauge_fill", "gauge_background", 80, 50, 100)
 		}))
 
 		-- 「-」ボタンが押されたらvalueを引く
@@ -139,6 +139,14 @@ local function make_ui(self)
 			local g = self.entity_manager:get("gauge"):get_component("gauge")
 			g.value = g.value + 1
 		end)
+		-- ゲージの値が変わったときにテキストを変更する
+		self.entity_manager:get("gauge"):get_component("gauge").on_value_changed:add(function(v)
+			local n = gui.get_node("gauge_value")
+			gui.set_text(n, v)
+		end)
+
+		local n = gui.get_node("gauge_value")
+		gui.set_text(n, 80)
 	end
 
 	self.entity_manager:start()
