@@ -5,6 +5,7 @@ local event_trigger = require "ui_component.components.event_trigger"
 local button = require "ui_component.components.button"
 local toggle = require "ui_component.components.toggle"
 local toggle_group = require "ui_component.components.toggle_group"
+local gauge = require "ui_component.components.gauge"
 
 local function create_button_animation()
 	local instance = component.new("button_animation")
@@ -111,6 +112,33 @@ local function make_ui(self)
 		toggle_group:register_toggle(self.entity_manager:get("toggle3"):get_component("toggle"))
 		toggle_group:register_toggle(self.entity_manager:get("toggle4"):get_component("toggle"))
 		toggle_group:register_toggle(self.entity_manager:get("toggle5"):get_component("toggle"))
+	end
+
+	do
+		self.entity_manager:add(entity.new("gauge_down_button", {
+			button.new(),
+			event_trigger.new(),
+			create_button_animation(),
+		}))
+		self.entity_manager:add(entity.new("gauge_up_button", {
+			button.new(),
+			event_trigger.new(),
+			create_button_animation(),
+		}))
+		self.entity_manager:add(entity.new("gauge", {
+			gauge.new("gauge_fill", "gauge_background", 80, 100)
+		}))
+
+		-- 「-」ボタンが押されたらvalueを引く
+		self.entity_manager:get("gauge_down_button"):get_component("button").on_click:add(function()
+			local g = self.entity_manager:get("gauge"):get_component("gauge")
+			g.value = g.value - 1
+		end)
+		-- 「+」ボタンが押されたらvalueに足す
+		self.entity_manager:get("gauge_up_button"):get_component("button").on_click:add(function()
+			local g = self.entity_manager:get("gauge"):get_component("gauge")
+			g.value = g.value + 1
+		end)
 	end
 
 	self.entity_manager:start()
