@@ -1,8 +1,0 @@
-local deftest = require "deftest.deftest"
-
-function init(self)
-	deftest.add(require "test.util.event")
-	deftest.add(require "test.util.property")
-	deftest.add(require "test.ecs.component")
-	deftest.run()
-end
